@@ -23,6 +23,149 @@ Site runs at http://localhost:3000.
 A `data/waitlist.json` file is created on first signup in dev. It's gitignored
 and is not used in production.
 
+## Run the full stack (launchpad + both apps)
+
+The launchpad is the front door. The "Launch app" buttons on each product
+page open the live React/Vite app for that product, which in turn calls its
+own FastAPI backend.
+
+### Prerequisites
+
+- **Node.js >= 18** (`node -v`)
+- **Python 3.10+** with `pip`
+- **conda** (Miniforge / Miniconda) — used by Content Pulse's `setup.sh` and
+  recommended for Shelf Pulse
+- **git**
+- macOS / Linux. On Windows use WSL2.
+
+### 1. Clone all three repos as siblings
+
+The launcher expects this layout:
+
+```
+projects/
+├── launchpad-site/          (this repo)
+├── content-pulse-india/
+└── Ecommerce_scrapper/
+```
+
+```bash
+mkdir -p ~/projects && cd ~/projects
+git clone https://github.com/Aabhas4403/Launchpad_PulseStudio.git launchpad-site
+git clone https://github.com/Aabhas4403/ContentPulse.git           content-pulse-india
+git clone https://github.com/Aabhas4403/Ecommerce_scrapper.git     Ecommerce_scrapper
+```
+
+### 2. Install dependencies (one-time per repo)
+
+**Launchpad** (Next.js):
+
+```bash
+cd ~/projects/launchpad-site
+npm install
+```
+
+**Content Pulse** (FastAPI + Vite). Easiest is its own setup script — it
+creates a conda env named `content-pulse`, installs Python + Node deps, and
+exits without booting:
+
+```bash
+cd ~/projects/content-pulse-india
+./setup.sh --setup-only
+```
+
+If you prefer a venv instead of conda:
+
+```bash
+cd ~/projects/content-pulse-india
+python3 -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+( cd content-pulse && npm install )
+deactivate
+```
+
+**Shelf Pulse** (FastAPI + Vite):
+
+```bash
+cd ~/projects/Ecommerce_scrapper
+# create a dedicated env (recommended)
+conda create -y -n ecom_scraper python=3.12
+conda activate ecom_scraper
+pip install -r requirements.txt
+python -m playwright install chromium    # one-time, ~150 MB
+( cd frontend && npm install )
+conda deactivate
+```
+
+### 3. Boot everything with one command
+
+```bash
+cd ~/projects/launchpad-site
+./scripts/start-all.sh
+```
+
+That starts:
+
+| Service                | URL                                  |
+| ---------------------- | ------------------------------------ |
+| Launchpad (Next.js)    | http://localhost:3000                |
+| Content Pulse UI       | http://localhost:5173                |
+| Content Pulse API      | http://localhost:8000                |
+| Shelf Pulse UI         | http://localhost:5500                |
+| Shelf Pulse API        | http://localhost:8010                |
+
+Open http://localhost:3000 — the **Launch app** buttons on each product
+page open the corresponding running app. Logs stream into [logs/](logs/);
+**Ctrl-C** tears everything down.
+
+The script writes a `.env.local` with the right `NEXT_PUBLIC_*_URL` values so
+the launchpad's "Launch app" buttons point at the local instances. Override
+those env vars (or any port via `LAUNCHPAD_PORT`, `CP_BACKEND_PORT`, etc.) to
+point at deployed instances instead.
+
+### Configuration knobs
+
+All environment variables read by `scripts/start-all.sh`:
+
+| Variable             | Default                                | Purpose                                            |
+| -------------------- | -------------------------------------- | -------------------------------------------------- |
+| `CONTENT_PULSE_DIR`  | `../content-pulse-india`               | Path to the Content Pulse repo                     |
+| `SHELF_PULSE_DIR`    | `../Ecommerce_scrapper`                | Path to the Shelf Pulse repo                       |
+| `LAUNCHPAD_PORT`     | `3000`                                 | Next.js port                                       |
+| `CP_BACKEND_PORT`    | `8000`                                 | Content Pulse FastAPI                              |
+| `CP_FRONTEND_PORT`   | `5173`                                 | Content Pulse Vite                                 |
+| `SP_BACKEND_PORT`    | `8010`                                 | Shelf Pulse FastAPI (moved off 8000 to avoid clash) |
+| `SP_FRONTEND_PORT`   | `5500`                                 | Shelf Pulse Vite                                   |
+| `SP_PYTHON`          | auto-detected (`.venv` → conda → PATH) | Python interpreter for Shelf Pulse backend         |
+
+Example overrides:
+
+```bash
+CONTENT_PULSE_DIR=/abs/path/to/content-pulse-india \
+SHELF_PULSE_DIR=/abs/path/to/Ecommerce_scrapper \
+SP_PYTHON=$HOME/miniforge3/envs/ecom_scraper/bin/python \
+./scripts/start-all.sh
+```
+
+### Troubleshooting
+
+- **Port already in use** — kill the listener:
+  `lsof -tiTCP:3000 -sTCP:LISTEN | xargs kill` (replace `3000` as needed).
+- **Shelf Pulse backend fails: `No module named uvicorn`** — `SP_PYTHON` is
+  pointing at a Python without the deps. Activate the right env or set
+  `SP_PYTHON` explicitly.
+- **Content Pulse backend fails: `ModuleNotFoundError`** — the launcher uses
+  the `.venv` inside `content-pulse-india/` if present; otherwise falls back
+  to the `python3` on `PATH`. Activate the conda env first or create a
+  `.venv` inside that repo.
+- **"Launch app" buttons 404** — make sure all five services show `200`:
+  ```bash
+  for u in http://localhost:3000 http://localhost:5173 http://localhost:5500 \
+           http://localhost:8000/api/health http://localhost:8010/api/health; do
+    printf "%-40s " "$u"; curl -s -m 3 -o /dev/null -w "%{http_code}\n" "$u"
+  done
+  ```
+
 ## Project structure
 
 ```

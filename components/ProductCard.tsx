@@ -2,9 +2,10 @@
 
 import Link from 'next/link';
 import { motion } from 'motion/react';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import type { Product } from '@/lib/products';
 import { resolveProductIcon } from '@/lib/icons';
+import { getAppUrl } from '@/lib/appUrls';
 
 export default function ProductCard({
   product,
@@ -14,6 +15,7 @@ export default function ProductCard({
   index?: number;
 }) {
   const Icon = resolveProductIcon(product.icon);
+  const appUrl = getAppUrl(product.slug);
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -76,16 +78,14 @@ export default function ProductCard({
           >
             See it in action <ArrowRight className="w-4 h-4" />
           </Link>
-          {product.links?.[0] && (
-            <a
-              href={product.links[0].href}
-              target="_blank"
-              rel="noreferrer"
-              className="text-[11px] font-bold uppercase tracking-[0.18em] text-[var(--color-faint)] hover:text-white transition"
-            >
-              {product.links[0].label} →
-            </a>
-          )}
+          <a
+            href={appUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="inline-flex items-center gap-1.5 text-[11px] font-black uppercase tracking-[0.18em] text-white/90 hover:text-[var(--color-brand)] transition"
+          >
+            Launch app <ExternalLink className="w-3 h-3" />
+          </a>
         </div>
       </div>
     </motion.article>

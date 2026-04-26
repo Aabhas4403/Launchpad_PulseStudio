@@ -1,13 +1,15 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, ExternalLink } from 'lucide-react';
 import FeatureGrid from '@/components/FeatureGrid';
 import WaitlistForm from '@/components/WaitlistForm';
 import { getProduct } from '@/lib/products';
 import { resolveProductIcon } from '@/lib/icons';
+import { getAppUrl } from '@/lib/appUrls';
 
 const product = getProduct('content-pulse');
 const Icon = resolveProductIcon(product.icon);
+const appUrl = getAppUrl('content-pulse');
 
 export const metadata: Metadata = {
   title: product.name,
@@ -42,9 +44,17 @@ export default function ContentPulsePage() {
           </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+            <a
+              href={appUrl}
+              target="_blank"
+              rel="noreferrer"
+              className="h-12 px-7 inline-flex items-center gap-2 bg-[var(--color-brand)] text-black font-black uppercase text-[11px] tracking-[0.18em] rounded-full hover:scale-[1.03] hover:bg-[var(--color-brand-hover)] transition brand-glow"
+            >
+              Launch app <ExternalLink className="w-4 h-4" />
+            </a>
             <Link
               href="#waitlist"
-              className="h-12 px-7 inline-flex items-center gap-2 bg-[var(--color-brand)] text-black font-black uppercase text-[11px] tracking-[0.18em] rounded-full hover:scale-[1.03] hover:bg-[var(--color-brand-hover)] transition brand-glow"
+              className="h-12 px-7 inline-flex items-center gap-2 border border-white/15 text-white font-black uppercase text-[11px] tracking-[0.18em] rounded-full hover:border-white/30 hover:bg-white/5 transition"
             >
               {product.ctaPrimary} <ArrowRight className="w-4 h-4" />
             </Link>
