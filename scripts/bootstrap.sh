@@ -177,13 +177,24 @@ fi
 step "Installing Shelf Pulse frontend deps"
 # The upstream Ecommerce_scrapper repo currently .gitignores its package.json
 # and a few sibling files, so a fresh clone is missing them. Patch them in
-# from the bundled fallback copy if they're missing.
-SP_FALLBACK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/sp-frontend-fallback"
+# from the bundled fallback copy if they're missing. When this script is
+# executed via process substitution (bash <(curl ...)), BASH_SOURCE[0] points
+# at /dev/fd/<n> and the local fallback dir won't exist — in that case we
+# download the fallback files from the launchpad-site repo over HTTPS.
+SP_FALLBACK_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)/sp-frontend-fallback"
+SP_FALLBACK_URL="${SP_FALLBACK_URL:-https://raw.githubusercontent.com/Aabhas4403/Launchpad_PulseStudio/main/scripts/sp-frontend-fallback}"
 SP_FRONT="$SHELF_PULSE_DIR/frontend"
 for f in package.json index.html tsconfig.json tsconfig.app.json tsconfig.node.json; do
-  if [[ ! -f "$SP_FRONT/$f" && -f "$SP_FALLBACK_DIR/$f" ]]; then
+  if [[ -f "$SP_FRONT/$f" ]]; then
+    continue
+  fi
+  if [[ -f "$SP_FALLBACK_DIR/$f" ]]; then
     cp "$SP_FALLBACK_DIR/$f" "$SP_FRONT/$f"
-    ok "patched in missing frontend/$f"
+    ok "patched in missing frontend/$f (local fallback)"
+  elif curl -fsSL "$SP_FALLBACK_URL/$f" -o "$SP_FRONT/$f" 2>/dev/null; then
+    ok "patched in missing frontend/$f (remote fallback)"
+  else
+    die "frontend/$f missing and could not be fetched from $SP_FALLBACK_URL/$f"
   fi
 done
 ( cd "$SP_FRONT" && npm install --no-audit --no-fund --silent )
