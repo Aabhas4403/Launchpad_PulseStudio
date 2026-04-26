@@ -34,7 +34,7 @@ USE_VENV="${USE_VENV:-0}"
 
 LAUNCHPAD_REPO="${LAUNCHPAD_REPO:-https://github.com/Aabhas4403/Launchpad_PulseStudio.git}"
 CONTENT_PULSE_REPO="${CONTENT_PULSE_REPO:-https://github.com/Aabhas4403/ContentPulse.git}"
-SHELF_PULSE_REPO="${SHELF_PULSE_REPO:-https://github.com/jithendra-roy/Ecommerce_scrapper.git}"
+SHELF_PULSE_REPO="${SHELF_PULSE_REPO:-https://github.com/Aabhas4403/Ecommerce_scrapper.git}"
 
 LAUNCHPAD_DIR="$PULSE_ROOT/launchpad-site"
 CONTENT_PULSE_DIR="$PULSE_ROOT/content-pulse-india"
