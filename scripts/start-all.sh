@@ -38,6 +38,19 @@ CP_FRONTEND_PORT="${CP_FRONTEND_PORT:-5173}"
 SP_BACKEND_PORT="${SP_BACKEND_PORT:-8010}"
 SP_FRONTEND_PORT="${SP_FRONTEND_PORT:-5500}"
 
+# Python interpreter for the Content Pulse backend. Defaults to a sibling
+# .venv if it exists, otherwise the conda env `content-pulse`, otherwise
+# whichever `python3` is on PATH. Override with CP_PYTHON=/path/to/python.
+if [[ -z "${CP_PYTHON:-}" ]]; then
+  if [[ -x "$CONTENT_PULSE_DIR/.venv/bin/python" ]]; then
+    CP_PYTHON="$CONTENT_PULSE_DIR/.venv/bin/python"
+  elif [[ -x "$HOME/miniforge3/envs/content-pulse/bin/python" ]]; then
+    CP_PYTHON="$HOME/miniforge3/envs/content-pulse/bin/python"
+  else
+    CP_PYTHON="python3"
+  fi
+fi
+
 # Python interpreter for the Shelf Pulse backend. Defaults to a sibling
 # .venv if it exists, otherwise the conda env `ecom_scraper`, otherwise
 # whichever `python3` is on PATH. Override with SP_PYTHON=/path/to/python.
@@ -93,14 +106,10 @@ log "Starting Launchpad on :$LAUNCHPAD_PORT"
 PIDS+=($!)
 
 # --- 2. Content Pulse --------------------------------------------------------
-log "Starting Content Pulse backend on :$CP_BACKEND_PORT"
+log "Starting Content Pulse backend on :$CP_BACKEND_PORT (python: $CP_PYTHON)"
 (
   cd "$CONTENT_PULSE_DIR"
-  if [[ -d ".venv" ]]; then
-    # shellcheck disable=SC1091
-    source .venv/bin/activate
-  fi
-  exec uvicorn app.api:app --host 0.0.0.0 --port "$CP_BACKEND_PORT"
+  exec "$CP_PYTHON" -m uvicorn app.api:app --host 0.0.0.0 --port "$CP_BACKEND_PORT"
 ) > "$LOG_DIR/content-pulse-backend.log" 2>&1 &
 PIDS+=($!)
 

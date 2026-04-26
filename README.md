@@ -29,7 +29,36 @@ The launchpad is the front door. The "Launch app" buttons on each product
 page open the live React/Vite app for that product, which in turn calls its
 own FastAPI backend.
 
-### Prerequisites
+### One-command bootstrap (zero to running)
+
+If you have **git, node 18+, python 3.10+, and conda** installed, this single
+line goes from nothing to all 5 services running — clones every repo into
+`~/projects/pulse-studio/`, installs every dependency, and launches:
+
+```bash
+bash <(curl -fsSL https://raw.githubusercontent.com/Aabhas4403/Launchpad_PulseStudio/main/scripts/bootstrap.sh)
+```
+
+Or if you've already cloned this repo:
+
+```bash
+./scripts/bootstrap.sh
+```
+
+Knobs (all optional):
+
+| Variable      | Default                          | Effect                                       |
+| ------------- | -------------------------------- | -------------------------------------------- |
+| `PULSE_ROOT`  | `~/projects/pulse-studio`        | Where the three repos get cloned             |
+| `SKIP_RUN=1`  | unset                            | Set up everything, don't launch              |
+| `USE_VENV=1`  | unset                            | Use a venv for Content Pulse instead of conda |
+
+The script is **idempotent** — re-running just refetches and re-installs.
+When it finishes, jump to <http://localhost:3000>.
+
+### Manual setup (if you want full control)
+
+#### Prerequisites
 
 - **Node.js >= 18** (`node -v`)
 - **Python 3.10+** with `pip`
