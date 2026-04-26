@@ -120,7 +120,7 @@ export const PRODUCTS: Product[] = [
     ],
     ctaPrimary: 'Join the Shelf Pulse beta',
     links: [
-      { label: 'GitHub', href: 'https://github.com/Aabhas4403/Ecommerce_scrapper' },
+      { label: 'GitHub', href: 'https://github.com/jithendra-roy/Ecommerce_scrapper' },
     ],
     stats: [
       { label: 'Sites supported', value: '5' },

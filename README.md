@@ -82,7 +82,7 @@ projects/
 mkdir -p ~/projects && cd ~/projects
 git clone https://github.com/Aabhas4403/Launchpad_PulseStudio.git launchpad-site
 git clone https://github.com/Aabhas4403/ContentPulse.git           content-pulse-india
-git clone https://github.com/Aabhas4403/Ecommerce_scrapper.git     Ecommerce_scrapper
+git clone https://github.com/jithendra-roy/Ecommerce_scrapper.git     Ecommerce_scrapper
 ```
 
 ### 2. Install dependencies (one-time per repo)
