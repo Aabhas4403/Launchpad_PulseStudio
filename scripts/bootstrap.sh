@@ -12,8 +12,9 @@
 #
 # It will:
 #   1. Verify prerequisites (git, node, python3, conda — installs Playwright).
-#   2. Use the current directory as the parent (override with PULSE_ROOT=/path).
-#   3. Clone all three repos as siblings (skips if they already exist).
+#   2. Create a `pulse-studio/` folder inside the current directory
+#      (override the full path with PULSE_ROOT=/some/path).
+#   3. Clone all three repos as siblings inside it (skips if they already exist).
 #   4. Install Node + Python deps for every repo.
 #   5. Install the Playwright Chromium browser (Shelf Pulse needs it).
 #   6. Hand off to scripts/start-all.sh, which boots all 5 services.
@@ -21,13 +22,13 @@
 # Re-running is safe — every step is idempotent.
 #
 # Override knobs:
-#   PULSE_ROOT       parent dir for the three repos (default: current directory)
+#   PULSE_ROOT       full path for the project root (default: $PWD/pulse-studio)
 #   SKIP_RUN=1       set up everything but don't launch
 #   USE_VENV=1       use a local .venv for Content Pulse instead of conda
 # -----------------------------------------------------------------------------
 set -euo pipefail
 
-PULSE_ROOT="${PULSE_ROOT:-$PWD}"
+PULSE_ROOT="${PULSE_ROOT:-$PWD/pulse-studio}"
 SKIP_RUN="${SKIP_RUN:-0}"
 USE_VENV="${USE_VENV:-0}"
 

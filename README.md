@@ -32,17 +32,16 @@ own FastAPI backend.
 ### One-command bootstrap (zero to running)
 
 If you have **git, node 18+, python 3.10+, and conda** installed, this single
-line goes from nothing to all 5 services running — clones every repo into
-the **current directory**, installs every dependency, and launches:
+line goes from nothing to all 5 services running. It creates a `pulse-studio/`
+folder inside whatever directory you're currently in, clones every repo there,
+installs every dependency, and launches everything:
 
 ```bash
-mkdir -p ~/pulse-studio && cd ~/pulse-studio
 bash <(curl -fsSL https://raw.githubusercontent.com/Aabhas4403/Launchpad_PulseStudio/main/scripts/bootstrap.sh)
 ```
 
-> The three repos are cloned as siblings in whatever folder you run the
-> command from. Override with `PULSE_ROOT=/some/path` if you want a
-> different parent dir.
+> Run it from any folder — the script will create `./pulse-studio/` for you.
+> Override with `PULSE_ROOT=/full/path` if you want a custom location.
 
 Or if you've already cloned this repo:
 
@@ -54,7 +53,7 @@ Knobs (all optional):
 
 | Variable      | Default                          | Effect                                       |
 | ------------- | -------------------------------- | -------------------------------------------- |
-| `PULSE_ROOT`  | current directory (`$PWD`)       | Where the three repos get cloned             |
+| `PULSE_ROOT`  | `$PWD/pulse-studio`              | Full path for the project root               |
 | `SKIP_RUN=1`  | unset                            | Set up everything, don't launch              |
 | `USE_VENV=1`  | unset                            | Use a venv for Content Pulse instead of conda |
 
