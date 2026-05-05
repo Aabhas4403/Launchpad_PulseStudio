@@ -35,7 +35,7 @@ export const PRODUCTS: Product[] = [
     tagline:
       'Pre-test marketing creative against synthetic consumers — for any country, in minutes.',
     pitch:
-      'Drop in your ad copy, image, or A/B variants. We sample N synthetic consumers from culturally accurate demographics and stream their reactions live. You get the same artefacts a research panel would — six-principle scores, segment cuts, verbatim quotes, and an interactive society graph — without booking a focus group.',
+      'Drop in your ad copy, image, or A/B variants. We sample synthetic consumers from culturally accurate demographics and stream their reactions live. Upload past-campaign winners and the rewriter biases toward what actually converted for you. Re-simulate any rewrite in one click — close the loop between scoring and creative without leaving the screen.',
     icon: 'sparkles',
     features: [
       {
@@ -43,30 +43,31 @@ export const PRODUCTS: Product[] = [
         body: 'Engagement · Cultural Relevance · Brand Trust · Purchase Intent · Clarity · Controversy. Cuts by region, age, income, language, and urbanicity.',
       },
       {
+        title: 'Past-campaign learning',
+        body: 'Upload last quarter\u2019s metrics CSV plus the actual creative. We mine your winning hooks, power words, CTAs, tones and visual palette \u2014 and bias every rewrite toward them.',
+      },
+      {
+        title: 'Closed-loop refine',
+        body: 'Targeted rewrite + inline re-simulation against the same audience. See per-principle deltas \u2014 lift in green, regression in red \u2014 before you ship.',
+      },
+      {
+        title: 'Trend-aware audience',
+        body: 'Live Google Trends + GDELT events overlay the audience model so reactions are grounded in what they\u2019re actually consuming this week.',
+      },
+      {
         title: 'Any country, on the fly',
         body: 'India ships pre-built. Other countries get a culturally-specific profile generated on first use and cached locally.',
       },
       {
-        title: 'Mock vs real LLM',
-        body: 'Mock backend for instant deterministic runs. Switch to Ollama for richer, qualitative reactions from a real local model.',
-      },
-      {
-        title: 'Refine — guarded rewrites',
-        body: 'After scoring, get principle-targeted rewrite suggestions backed by competitor SERP patterns. Claims, prices, and certifications are preserved verbatim.',
-      },
-      {
-        title: 'Live society graph',
-        body: 'Watch reactions cascade through a force-directed follow network. Per-agent ego focus, demographic charts, persona cards.',
-      },
-      {
-        title: 'OASIS-compatible',
-        body: 'Engine mirrors camel-ai/oasis (make → reset → step) so it stays swap-compatible with the 1M-agent framework.',
+        title: 'Local-first, private',
+        body: 'Runs on Mock or local Ollama. Brand creative and PII never leave your perimeter \u2014 a hard requirement for FMCG, BFSI and pharma teams.',
       },
     ],
     audience: [
-      'Brand marketers pre-testing campaigns',
-      'Creative agencies rapid-iterating on copy',
+      'Brand marketers pre-testing campaigns before media spend',
+      'Performance & growth teams picking the best of N variants',
       'Insights teams needing directional reads in hours, not weeks',
+      'Creative agencies turning subjective feedback into a scorecard',
     ],
     ctaPrimary: 'Join the Content Pulse beta',
     links: [
@@ -75,7 +76,7 @@ export const PRODUCTS: Product[] = [
     stats: [
       { label: 'Synthetic consumers', value: '1k+' },
       { label: 'Scoring principles', value: '6' },
-      { label: 'Countries supported', value: '∞' },
+      { label: 'Countries supported', value: '\u221E' },
     ],
   },
   {

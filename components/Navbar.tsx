@@ -8,6 +8,8 @@ import { cn } from '@/lib/utils';
 const NAV = [
   { href: '/products/content-pulse', label: 'Content Pulse' },
   { href: '/products/shelf-pulse', label: 'Shelf Pulse' },
+  { href: '/#use-cases', label: 'Use cases' },
+  { href: '/#how', label: 'How it works' },
   { href: '/#demo', label: 'Demo' },
 ];
 

@@ -36,11 +36,11 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.05 }}
               className="text-5xl md:text-7xl font-black tracking-tighter leading-[0.92] text-balance"
             >
-              Decode the shelf.
+              Test your campaign on
               <br />
-              <span className="shimmer-text">Pre-test the message.</span>
+              <span className="shimmer-text">200 synthetic consumers</span>
               <br />
-              Refine before you spend.
+              before you spend a rupee.
             </motion.h1>
 
             <motion.p
@@ -49,9 +49,10 @@ export default function Hero() {
               transition={{ duration: 0.5, delay: 0.1 }}
               className="max-w-xl text-lg md:text-xl text-[var(--color-muted)] font-medium leading-relaxed"
             >
-              Scrape what's already winning the e-commerce shelf. Simulate how
-              real consumers will react to your creative. Get principle-targeted
-              rewrites — all in one flow.
+              Pulse Studio is the pre-flight checker for marketing creative.
+              Score copy, image and video against a culturally-grounded
+              audience, learn from your past winners, and get a one-click
+              rewrite that re-tests itself — all before media goes live.
             </motion.p>
 
             <motion.div
